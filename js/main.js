@@ -79,5 +79,8 @@ var typed = new Typed(".text",{
 
 
 
+const date = new Date();
+const year = date.getFullYear();
 
-
+const yearSpan = document.getElementById("year");
+yearSpan.innerHTML = year;
