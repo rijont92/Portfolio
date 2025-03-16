@@ -84,3 +84,75 @@ const year = date.getFullYear();
 
 const yearSpan = document.getElementById("year");
 yearSpan.innerHTML = year;
+
+// Skills Slider
+const skillsWrapper = document.querySelector('.skills-wrapper');
+const prevButton = document.getElementById('prevSkills');
+const nextButton = document.getElementById('nextSkills');
+const skillBoxes = document.querySelectorAll('.skills-col');
+let currentPosition = 0;
+
+function getVisibleBoxes() {
+  if (window.innerWidth <= 768) return 1;
+  if (window.innerWidth <= 1200) return 2;
+  return 3;
+}
+
+function getBoxWidth() {
+  const container = skillsWrapper.parentElement;
+  const containerWidth = container.offsetWidth - (parseInt(window.getComputedStyle(container).paddingLeft) * 2);
+  const gap = parseInt(window.getComputedStyle(skillsWrapper).gap) || 80;
+  const visibleBoxes = getVisibleBoxes();
+  
+  // Calculate box width based on container width and gaps
+  return (containerWidth - (gap * (visibleBoxes - 1))) / visibleBoxes;
+}
+
+function updateSliderButtons() {
+  const visibleBoxes = getVisibleBoxes();
+  const maxIndex = skillBoxes.length - visibleBoxes;
+  const currentIndex = Math.round(currentPosition / (getBoxWidth() + parseInt(window.getComputedStyle(skillsWrapper).gap)));
+  
+  prevButton.disabled = currentIndex <= 0;
+  nextButton.disabled = currentIndex >= maxIndex;
+}
+
+function moveSlide(direction) {
+  const boxWidth = getBoxWidth();
+  const gap = parseInt(window.getComputedStyle(skillsWrapper).gap) || 80;
+  const moveAmount = boxWidth + gap;
+  const visibleBoxes = getVisibleBoxes();
+  const maxScroll = (skillBoxes.length - visibleBoxes) * moveAmount;
+  
+  currentPosition = Math.max(0, Math.min(currentPosition + (direction * moveAmount), maxScroll));
+  skillsWrapper.style.transform = `translateX(-${currentPosition}px)`;
+  updateSliderButtons();
+}
+
+prevButton.addEventListener('click', () => moveSlide(-1));
+nextButton.addEventListener('click', () => moveSlide(1));
+
+// Initialize slider
+function initializeSlider() {
+  const boxWidth = getBoxWidth();
+  
+  // Set width for each box
+  skillBoxes.forEach(box => {
+    box.style.width = `${boxWidth}px`;
+  });
+  
+  // Reset position
+  currentPosition = 0;
+  skillsWrapper.style.transform = 'translateX(0)';
+  updateSliderButtons();
+}
+
+// Initialize on load
+initializeSlider();
+
+// Update on window resize
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(initializeSlider, 100);
+});
