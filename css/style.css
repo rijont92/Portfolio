@@ -488,9 +488,10 @@ li.fourth-li {
 }
 
 .project-language {
-  display: flex;
-  justify-content: space-between;
+ display: grid;
+ grid-template-columns: 1fr 1fr;
   gap: 10px;
+  flex-wrap: wrap;
   margin: 20px 0;
 }
 
