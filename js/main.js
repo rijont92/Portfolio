@@ -87,10 +87,6 @@ yearSpan.innerHTML = year;
 
 // Skills Slider
 const skillsWrapper = document.querySelector('.skills-wrapper');
-const prevButton = document.getElementById('prevSkills');
-const nextButton = document.getElementById('nextSkills');
-const skillBoxes = document.querySelectorAll('.skills-col');
-let currentPosition = 0;
 
 function getVisibleBoxes() {
   if (window.innerWidth <= 768) return 1;
@@ -107,30 +103,6 @@ function getBoxWidth() {
   // Calculate box width based on container width and gaps
   return (containerWidth - (gap * (visibleBoxes - 1))) / visibleBoxes;
 }
-
-function updateSliderButtons() {
-  const visibleBoxes = getVisibleBoxes();
-  const maxIndex = skillBoxes.length - visibleBoxes;
-  const currentIndex = Math.round(currentPosition / (getBoxWidth() + parseInt(window.getComputedStyle(skillsWrapper).gap)));
-  
-  prevButton.disabled = currentIndex <= 0;
-  nextButton.disabled = currentIndex >= maxIndex;
-}
-
-function moveSlide(direction) {
-  const boxWidth = getBoxWidth();
-  const gap = parseInt(window.getComputedStyle(skillsWrapper).gap) || 80;
-  const moveAmount = boxWidth + gap;
-  const visibleBoxes = getVisibleBoxes();
-  const maxScroll = (skillBoxes.length - visibleBoxes) * moveAmount;
-  
-  currentPosition = Math.max(0, Math.min(currentPosition + (direction * moveAmount), maxScroll));
-  skillsWrapper.style.transform = `translateX(-${currentPosition}px)`;
-  updateSliderButtons();
-}
-
-prevButton.addEventListener('click', () => moveSlide(-1));
-nextButton.addEventListener('click', () => moveSlide(1));
 
 // Initialize slider
 function initializeSlider() {

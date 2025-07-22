@@ -295,7 +295,7 @@ var VanillaTilt = (function () {
     
         if (this.glare) {
           this.glareElement.style.transform = `rotate(${values.angle}deg) translate(-50%, -50%)`;
-          this.glareElement.style.opacity = `${values.percentageY * this.settings["max-glare"] / 100}`;
+          this.glareElement.style.opacity = `${values.percentageY * this.settings["max-glare"] / 200}`;
         }
     
         this.element.dispatchEvent(new CustomEvent("tiltChange", {
@@ -493,7 +493,24 @@ var VanillaTilt = (function () {
       /**
        * Auto load
        */
-      VanillaTilt.init(document.querySelectorAll("[data-tilt]"));
+      function handleVanillaTiltForScreenSize() {
+        const tiltElements = document.querySelectorAll("[data-tilt]");
+        if (window.innerWidth < 769) {
+          tiltElements.forEach(el => {
+            if (el.vanillaTilt) {
+              el.vanillaTilt.destroy();
+            }
+          });
+        } else {
+          VanillaTilt.init(tiltElements, { max: 30 });
+        }
+      }
+      
+      // Run on load
+      handleVanillaTiltForScreenSize();
+      
+      // Run on resize
+      window.addEventListener('resize', handleVanillaTiltForScreenSize);
     }
     
     return VanillaTilt;
