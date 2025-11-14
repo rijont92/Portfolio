@@ -25,6 +25,8 @@ cancelBtn.onclick = ()=>{
 
 
 
+
+
 var typed = new Typed(".text",{
   strings: ["Full-Stack Developer" , "Web Developer"],
   typeSpeed: 100,
@@ -74,6 +76,29 @@ var typed = new Typed(".text",{
 //     col.style.transform = 'rotateX(0deg) rotateY(0deg)';
 //   });
 // });
+
+
+
+function llogaritMosha() {
+  const dataLindjes = new Date("2008-12-04"); 
+  const sot = new Date();
+  
+
+  let mosha = sot.getFullYear() - dataLindjes.getFullYear();
+  const muaji = sot.getMonth() - dataLindjes.getMonth();
+  const dita = sot.getDate() - dataLindjes.getDate();
+
+  if (muaji < 0 || (muaji === 0 && dita < 0)) {
+    mosha--;
+  }
+
+  document.getElementById("age").innerHTML = mosha;
+
+}
+
+llogaritMosha();
+
+
 
 
 
